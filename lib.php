@@ -301,6 +301,9 @@ function hotpot_process_formdata(stdclass &$data, $mform) {
                     $text = preg_replace('/^((<p>\s*<\/p>)|(<br[^>]*>)|\s)+/is', '', $text);
                     $text = preg_replace('/((<p>\s*<\/p>)|(<br[^>]*>)|\s)+$/is', '', $text);
 
+                    // Sanitise HTML to prevent stored XSS.
+                    $text = clean_text($text, $data->{$editorfield}['format']);
+
                     $data->$textfield = $text;
                     $data->$formatfield = $data->{$editorfield}['format'];
                 }

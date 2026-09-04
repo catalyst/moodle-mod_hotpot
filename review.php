@@ -36,6 +36,10 @@ $cm       = get_coursemodule_from_instance('hotpot', $hotpot->id, $course->id, f
 require_login($course, true, $cm);
 if (! has_capability('mod/hotpot:reviewallattempts', $PAGE->context)) {
     require_capability('mod/hotpot:reviewmyattempts', $PAGE->context);
+    // "reviewmyattempts" only grants review of the holder's own attempts.
+    if ($attempt->userid != $USER->id) {
+        require_capability('mod/hotpot:reviewallattempts', $PAGE->context);
+    }
 }
 
 // Create an object to represent this attempt at the current HotPot activity

@@ -46,6 +46,7 @@ $PAGE->set_pagelayout('admin');
 echo $OUTPUT->header();
 
 if ($confirm = optional_param('confirm', 0, PARAM_INT)) {
+    require_sesskey();
     $DB->delete_records('hotpot_cache');
     $count_cache = 0;
 } else {
@@ -63,6 +64,7 @@ if ($count_cache) {
     echo '<form action="'.$CFG->wwwroot.$SCRIPT.'" method="post">';
     echo '<fieldset>';
     echo '<input type="hidden" value="1" name="confirm" />';
+    echo '<input type="hidden" value="'.sesskey().'" name="sesskey" />';
     echo '<input type="submit" value="'.get_string('confirm').'" />';
     echo '</fieldset>';
     echo '</td></tr>'."\n";
