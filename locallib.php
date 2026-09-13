@@ -1461,11 +1461,16 @@ class hotpot {
      * @return integer $reviewoptions currently available for this user at this attempt
      */
     function can_reviewattempt($attempt=null) {
+        global $USER;
         if ($this->can_reviewattempts()) {
             if ($attempt===null && isset($this->attempt)) {
                 $attempt = $this->attempt;
             }
             if ($attempt) {
+                // "reviewmyattempts" only grants review of the holder's own attempts.
+                if ($attempt->userid != $USER->id && ! $this->can_reviewallattempts()) {
+                    return 0;
+                }
                 if ($reviewoptions = ($this->reviewoptions & self::REVIEW_DURINGATTEMPT)) {
                     // during attempt
                     if ($attempt->status==self::STATUS_INPROGRESS) {
